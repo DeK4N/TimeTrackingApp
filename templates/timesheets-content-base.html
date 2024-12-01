@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet Content</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            margin-top: 30px;
+        }
+        .timesheet-details {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .timesheet-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .timesheet-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            flex: 1;
+            text-align: center;
+        }
+        .footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="timesheet-header" style="width: 100%;">
+        <a href="/timesheets" class="btn btn-secondary" title="Return to Timesheets" style="border-radius: 30px;"><i class="fas fa-arrow-left"></i></a>
+        <h1>Timesheet Details</h1>
+    </div>
+    <div class="container">
+        {% block timesheets %}{% endblock %}
+        
+        <div class="timesheet-details">
+            <h4 class="text-primary">Time Entries</h4>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Bond Line</th>
+                        <th scope="col">Kantata Line</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Ticket</th>
+                        <th scope="col">Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"> 1 </th>
+                        <td> 2</td>
+                        <td>3 </td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="timesheet-details">
+            <h4 class="text-primary">Summary of Hours</h4>
+            <p><strong>Total Hours Worked:</strong> 1</p>
+            <p><strong>Average Hours per Day:</strong> 2</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Notes & Timesheets Dashboard. All rights reserved.</p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
