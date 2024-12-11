@@ -1,0 +1,83 @@
+{% extends 'website-base.html' %}
+{% block content %}
+<div class="mb-4 timesheet-dropdown">
+    <label for="timesheetDropdown" class="form-label">Select a Timesheet:</label>
+    <select id="timesheet-dropdown-item" class="form-select" onchange="getTimesheetData(this)">
+        <option selected disabled>Select a timesheet</option>
+        {% for timesheet in timesheets %}
+            <option class="dropdown-id" value="{{ timesheet.id }}">{{ timesheet.year }} - {{ timesheet.month }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<h4>Timesheets Overview:</h4>
+
+    <div class="timesheet-wrapper">
+        <div class="row">
+            <!-- Timesheets Info -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header card-header-blue">
+                        Timesheet Info
+                        <span class="badge bg-info float-end">Pending</span>
+                    </div>
+                    <div class="card-body">
+                        <p>Week Starting: Dec 4, 2024</p>
+                        <p>Total Hours: 40</p>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <a href="/timesheets/details" class="text-decoration-none">View Timesheet Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header card-header-grey">
+                        Notes
+                    </div>
+                    <div class="card-body">
+                        <textarea class="form-control" rows="5" placeholder="Add notes here..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timesheet Entries Table -->
+        <div class="card mb-4">
+            <div class="card-header card-header-green d-flex justify-content-between align-items-center">
+                Timesheet Entries
+                <button class="btn btn-light btn-sm">Add New Entry</button>
+            </div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Project</th>
+                            <th>Project line</th>
+                            <th>Task</th>
+                            <th>Hours</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<script src="/static/js/timesheets/timesheets.js"></script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% set filtered_lines = project_lines | selectattr("project_id", "equalto", project.id) | list %}
+{% if filtered_lines %}
+    {% for line in filtered_lines %}
+        <tr class="project-line-data">
+            <td style="display: none;"><input class="project-line-item" value="{{ line.id }}" /></td>
+            <td><input type="text" class="form-control project-line-item" placeholder="Line name" value="{{ line.line_name }}" /></td>
+            <td><input type="text" class="form-control project-line-item" placeholder="Line details" value="{{ line.line_details }}" /></td>
+            <td>
+                <button class="btn btn-danger" onclick="deleteLine('{{ project.id }}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td id="no-lines-{{ project.id}}" colspan="3">No lines available for this project.</td>
+    </tr>
+{% endif %}
