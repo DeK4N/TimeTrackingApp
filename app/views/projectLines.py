@@ -6,9 +6,13 @@ project_lines_service = ProjectLines()
 project_lines = Blueprint('project_lines', __name__, url_prefix='/project-lines')
 
 @project_lines.route('/get-lines/<int:project_id>', methods=['GET'])
-def get_lines(project_id):
+@project_lines.route('/get-lines/<int:project_id>/<string:action>', methods=['GET'])
+def get_lines(project_id, action = None):
     project_lines = project_lines_service.get_project_lines(project_id)
-    return render_template('projects/regenerate_project_lines.html', project_lines = project_lines, project={"id": project_id})
+    if action == 'data':
+        return project_lines
+    else:
+        return render_template('projects/regenerate_project_lines.html', project_lines = project_lines, project={"id": project_id})
 
 @project_lines.route('/create', methods=['POST'])
 def create_line():

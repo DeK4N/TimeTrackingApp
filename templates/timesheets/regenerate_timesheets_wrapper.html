@@ -1,68 +1,107 @@
 
-    <div class="row">
-        <!-- Timesheets Info -->
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <div class="card-header card-header-blue">
-                    Timesheet Info
-                    <span class="badge bg-info float-end">Pending</span>
+<div class="row gx-4 gy-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Timesheet Info</span>
+                <span class="badge bg-info">Pending</span>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="timesheetDropdown" class="form-label fw-bold">Select a Timesheet:</label>
+                    <select id="timesheet-dropdown-item" class="form-select" onchange="getTimesheetData(this)">
+                        <option selected disabled>Select a timesheet</option>
+                        {% for ts in timesheets %}
+                            <option class="dropdown-id" value="{{ ts.id }}" {% if timesheet.id == ts.id %}selected{% endif %} >{{ ts.year }} - {{ ts.month }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                <div class="card-body">
-                    <p>Week Starting: Dec 4, 2024</p>
-                    <p>Total Hours: 40</p>
-                    <div class="progress mb-2">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <a href="/timesheets/details" class="text-decoration-none">View Timesheet Details</a>
+                <p class="mb-2 fw-bold">Week Starting: <span class="fw-normal">Dec 4, 2024</span></p>
+                <p class="mb-3 fw-bold">Total Hours: <span class="fw-normal">40</span></p>
+                <div class="progress mb-3" style="height: 10px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
+                <a href="/timesheets/details" class="text-decoration-none">View Timesheet Details</a>
             </div>
         </div>
+    </div>
 
-        <!-- Notes -->
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <div class="card-header card-header-grey">
-                    Notes asdsd
-                </div>
-                <div class="card-body">
-                    <textarea class="form-control" rows="5" placeholder="Add notes here..."></textarea>
-                </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header fw-bold">Notes</div>
+            <div class="card-body">
+                <textarea class="form-control" rows="5" placeholder="Add notes here..."></textarea>
             </div>
         </div>
+    </div>
+</div>
 
+<!-- Timesheet Entries Table -->
+<div class="card mt-4">
 
-    <!-- Timesheet Entries Table -->
-    <div class="card mb-4">
-        <div class="card-header card-header-green d-flex justify-content-between align-items-center">
-            Timesheet Entries
-            <button class="btn btn-light btn-sm" onclick="addNewTimeEntry()">Add New Entry</button>
-        </div>
-        <div class="card-body p-0">
-            <table class="table mb-0 timeentires-table">
-                <thead class="table-light">
-                    <tr>
-                        <th>Date</th>
-                        <th>Project</th>
-                        <th>Project line</th>
-                        <th>Task</th>
-                        <th>Hours</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in entries %}
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-bold">Timesheet Entries</span>
+        <button class="btn btn-light btn-sm" onclick="addNewTimeEntry()">Add New Entry</button>
+    </div>
+    <div class="card-body p-0">
+        <table id="timesheet-table" class="table mb-0 timeentires-table" tabindex="0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 15%;">Date</th>
+                    <th style="width: 20%;">Project</th>
+                    <th style="width: 20%;">Project Line</th>
+                    <th style="width: 10%;">Ticket</th>
+                    <th style="width: 10%;">Time Spent</th>
+                    <th style="width: 15%;">Notes</th>
+                    <th style="width: 8%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if entries is defined and entries[0] is defined %}
+                    {% for entry in entries | sort(attribute="date") %}
+                    <tr data-entry-id="{{ entry.id }}">
                         <td>
-                            <button class="btn btn-danger btn-sm">Delete</button>
+                            <input type="date" class="form-control form-control-sm entry-input" name="date" placeholder="Entry date" value="{{ entry.date }}" />
+                        </td>
+                        <td>
+                            <select id="project-dropdown" class="form-control form-control-sm entry-input" name="project_id">
+                                <option value="" disabled selected>Select a project</option>
+                                {% for project in projects %}
+                                    <option value="{{ project.id }}" {% if project.id == entry.project_id %}selected{% endif %}>
+                                        {{ project.project_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <select id="project-line-dropdown" class="form-control form-control-sm entry-input" name="project_line_id">
+                                <option value="" disabled selected>Select a project line</option>
+                                {% for line in project_lines %}
+                                    {% if entry.project_id != 0 and entry.project_id == line.project_id %}
+                                        <option value="{{ line.id }}" {% if line.id == entry.project_line_id %}selected{% endif %}>
+                                            {{ line.line_name }}
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm entry-input" name="ticket" value="{{ entry.ticket }}" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm entry-input" name="time_spent" value="{{ entry.time_spent }}" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm entry-input" name="notes" value="{{ entry.notes }}" />
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm delete-entry">Delete</button>
                         </td>
                     </tr>
                     {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
+</div>
+

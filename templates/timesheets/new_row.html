@@ -1,0 +1,32 @@
+<tr data-entry-id="{{ entry.id }}">
+    <td>
+        <input type="date" class="form-control form-control-sm entry-input" name="date" placeholder="Entry date" value="{{ entry.date }}" />
+    </td>
+    <td>
+        <select id="project-dropdown" class="form-control form-control-sm entry-input" name="project_id">
+            <option value="" disabled selected>Select a project</option>
+            {% for project in projects %}
+                <option value="{{ project.id }}" {% if project.id == entry.project_id %}selected{% endif %}>
+                    {{ project.project_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </td>
+    <td>
+        <select id="project-line-dropdown" class="form-control form-control-sm entry-input" name="project_line_id">
+            <option value="" disabled selected>Select a project line</option>
+        </select>
+    </td>
+    <td>
+        <input type="text" class="form-control form-control-sm entry-input" name="ticket" value="{{ entry.ticket }}" />
+    </td>
+    <td>
+        <input type="number" class="form-control form-control-sm entry-input" name="time_spent" value="{{ entry.time_spent }}" />
+    </td>
+    <td>
+        <input type="text" class="form-control form-control-sm entry-input" name="notes" value="{{ entry.notes }}" />
+    </td>
+    <td>
+        <button class="btn btn-danger btn-sm delete-entry">Delete</button>
+    </td>
+</tr>
