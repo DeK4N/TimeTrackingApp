@@ -38,7 +38,6 @@ createProjectAPIBtn.addEventListener('click', () =>{
             return response.text();
         })
         .then(html => {
-            console.log(html)
             main.innerHTML = html
         })
     })
@@ -56,50 +55,6 @@ cancelBtn.addEventListener('click', () => {
     newProjectPopup.classList.remove('animate-slide-down');
 });
 
-
-// const saveButtons = document.querySelectorAll('#save-btn')
-// saveButtons.forEach(btn => {
-//     btn.addEventListener('click', (e) => {
-//         const projectElement = e.target.closest('[data-project-id]');
-//         const projectID = projectElement.dataset.projectId
-//         let inputs = []
-
-//         const data = document.querySelectorAll(`[data-project-id="${projectID}"]`);
-//         data.forEach((elem) => {
-//             if (elem.tagName === 'INPUT' || elem.tagName === 'TEXTAREA' || elem.tagName === 'SELECT') {
-//                 inputs.push(elem.value)
-//             } else {
-//                 inputs.push(elem.innerText)
-//             }
-//         });
-        
-//         inputs = {
-//             "user_id": 1,
-//             "project_id": inputs[0],
-//             "project_name": inputs[1],
-//             "project_status": inputs[2],
-//             "project_details": inputs[4]
-//         }
-
-//         fetch('/projects/save', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(inputs)
-//         })
-//         .then(() => {
-//             regenerateProjectsData()
-//         })
-//     })
-// })
-
-
-// function createNewLine(element){
-//     const linesList = element.closest('.project-lines-table')
-//     console.log(linesList)
-// }
-
 function createNewLine(project_id){
     const linesTable = document.querySelector(`#table-content-${project_id} tbody`);
     const linesExists = document.querySelector(`#no-lines-${project_id}`)
@@ -107,18 +62,7 @@ function createNewLine(project_id){
         const row = linesExists.closest('tr')
         row.remove()
     }
-    // const row = linesTable.insertRow(0)
-    // row.innerHTML =
-    // `
-    //     <td><input type="text" class="form-control project-line-item" placeholder="Line name"></td>
-    //     <td><input type="text" class="form-control project-line-item" placeholder="Line details"></td>
-    //     <td>
-    //         <button class="btn btn-danger" onclick="deleteLine('${project_id}')">
-    //             <i class="fas fa-trash"></i>
-    //         </button>
-    //     </td>
-    // `
-    // row.classList.add("project-line-data")
+
     temp_data = {
         "project_id": project_id,
         "line_name": "",
@@ -176,7 +120,6 @@ function saveProject(project_id){
     
     projectLines.forEach(line => {
         inputs = line.querySelectorAll('.project-line-item')
-        console.log(inputs)
         result = {
             "line_id": parseInt(inputs[0].value), 
             "project_id": parseInt(project_id),
@@ -227,7 +170,6 @@ function regenerateProjectLines(project_id){
         return response.text();
     })
     .then(html => {
-        console.log(html)
         main.innerHTML = html
     })
 }
